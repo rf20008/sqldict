@@ -53,6 +53,7 @@ class SqlDict(object):
                 value = value
             cur.execute('INSERT OR REPLACE INTO {} VALUES (?,?)'.format(self.__tablename),
                         (key, value))
+            conn.commit()
 
     def get(self, key, default):
         return self.__getitem__(key, default)
@@ -63,6 +64,7 @@ class SqlDict(object):
             cur.execute("SELECT COUNT(*) FROM {} WHERE {}=? LIMIT 1"
                         .format(self.__tablename, self.__key_col), (key,))
             res = cur.fetchone()
+            conn.commit()
         return res[0] != 0
 
     def values(self):
