@@ -4,16 +4,17 @@ from os.path import expanduser
 import sys
 
 
-def make_sql_table(kv_list, db_name, key_format="String", value_format="BLOB", serializer=pickle):
-    with connect(self.name) as conn:
+def make_sql_table(kv_list, db_name, key_format="String", value_format="BLOB", serializer=pickle, _table_name = "kv_store"):
+    with connect(db_name) as conn:
         cur = conn.cursor()
-        cur.execute('''CREATE TABLE kv_store (key {} PRIMARY KEY, val  {})'''
+        cur.execute(f'''CREATE TABLE IF NOT EXISTS {_table_name} (key {} PRIMARY KEY, val  {})'''
                     .format(key_format, value_format))
         for k,v in kv_list:
             if serializer is None:
-                cur.execute('INSERT OR IGNORE INTO kv_store VALUES (?,?)', (k, v))
+                cur.execute(f'INSERT OR IGNORE INTO {_table_name} VALUES (?,?)', (k, v))
             else:
-                cur.execute('INSERT OR IGNORE INTO kv_store VALUES (?,?)', (k, serializer.dumps(v)))
+                cur.execute(f'INSERT OR IGNORE INTO {_table_name} VALUES (?,?)', (k, serializer.dumps(v)))
+        conn.commit()
 
 
 class SqlDict(object):
@@ -22,6 +23,7 @@ class SqlDict(object):
                  serializer=pickle):
         if not name.endswith('.db'):
             name = name + '.db'
+        make_sql_table([], db_name = name)
         self.name = expanduser(name)
         self.serializer = serializer
         assert hasattr(serializer, 'loads')
