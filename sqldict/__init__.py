@@ -9,8 +9,8 @@ def make_sql_table(kv_list=[], db_name="", key_format="String", value_format="BL
         raise RuntimeError
     with connect(db_name) as conn:
         cur = conn.cursor()
-        cur.execute(f'''CREATE TABLE IF NOT EXISTS {_table_name} (key {} PRIMARY KEY, val  {})'''
-                    .format(key_format, value_format))
+        cur.execute(f'''CREATE TABLE IF NOT EXISTS {_table_name} (key {key_format} PRIMARY KEY, val  {value_format})'''
+
         for k,v in kv_list:
             if serializer is None:
                 cur.execute(f'INSERT OR IGNORE INTO {_table_name} VALUES (?,?)', (k, v))
