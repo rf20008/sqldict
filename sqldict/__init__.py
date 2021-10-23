@@ -4,7 +4,9 @@ from os.path import expanduser
 import sys
 
 
-def make_sql_table(kv_list, db_name, key_format="String", value_format="BLOB", serializer=pickle, _table_name = "kv_store"):
+def make_sql_table(kv_list=[], db_name="", key_format="String", value_format="BLOB", serializer=pickle, _table_name = "kv_store"):
+    if db_name == "":
+        raise RuntimeError
     with connect(db_name) as conn:
         cur = conn.cursor()
         cur.execute(f'''CREATE TABLE IF NOT EXISTS {_table_name} (key {} PRIMARY KEY, val  {})'''
