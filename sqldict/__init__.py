@@ -25,7 +25,7 @@ class SqlDict(object):
                  serializer=pickle):
         if not name.endswith('.db'):
             name = name + '.db'
-        make_sql_table([], db_name = name)
+        make_sql_table(db_name = name, _table_name = "kv_store")
         self.name = expanduser(name)
         self.serializer = serializer
         assert hasattr(serializer, 'loads')
