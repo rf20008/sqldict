@@ -57,7 +57,14 @@ class SqlDict(object):
                 value = value
             cur.execute('INSERT OR REPLACE INTO {} VALUES (?,?)'.format(self.__tablename),
                         (key, value))
+            conn.commit()  
+    def __delitem__(self, index):
+        with connect(self.name) as conn:
+            cur = conn.cursor()
+            cur.execute(f"""DELETE FROM {self.__tablename} 
+WHERE {self.__key_col} = ?""", (index))
             conn.commit()
+            
 
     def get(self, key, default):
         return self.__getitem__(key, default)
