@@ -1,0 +1,2 @@
+# Needed for async sqldict
+aiosqlite >= 0.3.0
