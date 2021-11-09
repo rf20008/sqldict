@@ -2,7 +2,7 @@ from sqlite3 import connect
 import pickle
 from os.path import expanduser
 import sys
-from .async_sql_dict import *
+from . import *
 
 def make_sql_table(kv_list=[], db_name="", key_format="String", value_format="BLOB", serializer=pickle, _table_name = "kv_store"):
     if db_name == "":
