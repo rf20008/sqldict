@@ -1,6 +1,7 @@
 from aiosqlite import connect
 #AioSqlite: https://pypi.org/project/aiosqlite/
 #Otherwise, you might get DataBase is locked errors
+import asyncio
 import pickle
 from os.path import expanduser
 import sys
@@ -28,7 +29,7 @@ class AsyncSqlDict(object):
                  serializer=pickle):
         if not name.endswith('.db'):
             name = name + '.db'
-        await make_sql_table(db_name = name, _table_name = "kv_store")
+        asyncio.run(make_sql_table(db_name = name, _table_name = "kv_store"))
         self.name = expanduser(name)
         self.serializer = serializer
         assert hasattr(serializer, 'loads')
