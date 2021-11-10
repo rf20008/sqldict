@@ -22,7 +22,7 @@ async def make_async_sql_table(kv_list=[], db_name="", key_format="String", valu
 
 
 class AsyncSqlDict(object):
-    "A version of SqlDict that uses 
+    "A version of SqlDict that uses aiosqlite3."
     def __init__(self, name,
                  table_name="kv_store", key_col="key", val_col="val",
                  serializer=pickle):
